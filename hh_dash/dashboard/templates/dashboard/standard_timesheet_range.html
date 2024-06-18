@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block chart_title %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">استاندارد تایم شیت</h1>
+    </div>
+{% endblock chart_title %}
+{% block datepicker %}
+    <form class="form-group" method="post" action="{% url 'dashboard:std_timesheet_range' %}"
+          class="main needs-validation" id="id_form">
+        {% csrf_token %}
+        <div class="m-2 col-md-12">
+            <div class="row align-items-end">
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ شروع &nbsp</label>
+                        {{ form.start }}
+                        {{ form.media }}
+                    </div>
+                </div>
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ پایان &nbsp</label>
+                        {{ form.end }}
+                        {{ form.media }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row align-items-end">
+                <div class="row align-items-end">
+
+                    <div class="form-group col-6 col-md-3">
+                        <button type="submit" class="btn btn-sm btn-outline-light my-2 bg-info" value="send"
+                                id="submit_btn">ارسال
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock datepicker %}
+
+{% block html_table %}
+
+    {% if final_table %}
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFive"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseFive">
+                        <h6>
+                            تاریخ فیلتر شده
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingFive">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ start_day }}
+                            /
+                            {{ start_month }}
+                            /
+                            {{ start_year }}
+                            الی
+                            {{ end_day }}
+                            /
+                            {{ end_month }}
+                            /
+                            {{ end_year }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div>
+        </div>
+
+
+        {% for project_name, details in final_table %}
+            <div class="accordion" id="accordion-{{ project_name | length }}{{ details | length }}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ project_name |length }}{{ details | length }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ project_name | length }}{{ details | length }}"
+                                aria-expanded="false"
+                                aria-controls="collapse{{ project_name | length }}{{ details | length }}">
+                            <h6>
+                                {{ project_name }}
+                            </h6>
+                        </button>
+                    </h2>
+                    <div id="collapse{{ project_name | length }}{{ details | length }}"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="heading-{{ project_name | length }}{{ details | length }}"
+                         data-bs-parent="#accordion-{{ project_name | length }}{{ details | length }}">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">سمت</th>
+                                        <th scope="col" class="text-center">زمان صرف شده فرد (ساعت)</th>
+                                        <th scope="col" class="text-center">کل زمان صرف شده (ساعت)</th>
+                                        <th scope="col" class="text-center">درصد انجام کار</th>
+                                        <th scope="col" class="text-center">رعایت بودجه‌بندی</th>
+                                    </tr>
+                                    </thead>
+                                    {% for item in details %}
+                                        <tbody>
+                                        <tr>
+                                            <td class="text-center">{{ item.user_key__job_key__job_rasteh }}</td>
+                                            <td class="text-center">{{ item.work_hours_group }}</td>
+                                            <td class="text-center">{{ item.work_hours_project }}</td>
+                                            <td class="text-center">{{ item.percentage | floatformat:"0" }}</td>
+                                            <td class="text-center">
+                                                {% if item.threshold == 0 %}
+                                                    &#10004;
+                                                {% else %}
+                                                    &#x2718;
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+    {% endif %}
+
+{% endblock html_table %}

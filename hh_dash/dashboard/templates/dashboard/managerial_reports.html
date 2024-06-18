@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block side_navbar %}
+{% endblock side_navbar %}
+
+{% block chart_title %}
+    <style>
+        a {
+            text-decoration: none !important;
+            color: #28282f;
+        }
+    </style>
+    <div class="album py-5 bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'dashboard:duplicate_signers_range' %}">
+                        <div class="card my-2" style="width: 13rem;">
+                            <img class="card-img-top" src="{% static "/images/icon/signature.gif" %}"
+                                 alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">امضای گزارش‌ها</h5>
+                                {#                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'dashboard:std_timesheet_range' %}">
+                        <div class="card my-2" style="width: 13rem;">
+                            <img class="card-img-top" src="{% static "/images/icon/appointment.gif" %}"
+                                 alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">استاندارد تایم شیت</h5>
+                                {#                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'dashboard:training_hours_range' %}">
+                        <div class="card my-2" style="width: 13rem;">
+                            <img class="card-img-top" src="{% static "/images/icon/presentation.gif" %}"
+                                 alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">ساعات آموزش</h5>
+                                {#                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock chart_title %}
+{% block html_table %}
+{% endblock html_table %}

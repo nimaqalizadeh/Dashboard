@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block chart_title %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">استاندارد تایم شیت</h1>
+    </div>
+{% endblock chart_title %}
+
+{% block html_table %}
+
+    {% if final_table %}
+        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div>
+        </div>
+
+        {% for project_name, details in final_table %}
+            <div class="accordion" id="accordion-{{ project_name | length }}{{ details | length }}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ project_name |length }}{{ details | length }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ project_name | length }}{{ details | length }}"
+                                aria-expanded="false"
+                                aria-controls="collapse{{ project_name | length }}{{ details | length }}">
+                            <h6>
+                                {{ project_name }}
+                            </h6>
+                        </button>
+                    </h2>
+                    <div id="collapse{{ project_name | length }}{{ details | length }}"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="heading-{{ project_name | length }}{{ details | length }}"
+                         data-bs-parent="#accordion-{{ project_name | length }}{{ details | length }}">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">سمت</th>
+                                        <th scope="col" class="text-center">زمان صرف شده فرد (ساعت)</th>
+                                        <th scope="col" class="text-center">کل زمان صرف شده (ساعت)</th>
+                                        <th scope="col" class="text-center">درصد انجام کار</th>
+                                        <th scope="col" class="text-center">رعایت بودجه‌بندی</th>
+                                    </tr>
+                                    </thead>
+                                    {% for item in details %}
+                                        <tbody>
+                                        <tr>
+                                            <td class="text-center">{{ item.user_key__job_key__job_rasteh }}</td>
+                                            <td class="text-center">{{ item.work_hours_group }}</td>
+                                            <td class="text-center">{{ item.work_hours_project }}</td>
+                                            <td class="text-center">{{ item.percentage | floatformat:"0" }}</td>
+                                            <td class="text-center">
+                                                {% if item.threshold == 0%}
+                                                    &#10004;
+                                                {% else %}
+                                                    &#x2718;
+                                                {% endif %}
+                                                    </td>
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        <nav aria-label="Page navigation example">
+            {% if final_table.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                    {% if final_table.has_previous %}
+                        <li class="page-item">
+                            <a href="?page={{ final_table.previous_page_number }}" class="page-link">&laquo;</a>
+                        </li>
+                    {% endif %}
+
+                    {% if final_table.number > 3 %}
+                        <li class="page-item"><a href="?page=1" class="page-link">صفحه اول</a></li>
+                    {% endif %}
+
+                    {% if final_table.number|add:'-2' > 1 %}
+                        <li class="page-item"><a href="?page={{ final_table.number|add:'-2' }}" class="page-link">&hellip;</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in final_table.paginator.page_range %}
+                        {% if final_table.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link">{{ i }}</a>
+                            </li>
+                        {% elif i > final_table.number|add:'-2' and i < final_table.number|add:'2' %}
+                            <li class="page-item">
+                                <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if final_table.paginator.num_pages > final_table.number|add:'2' %}
+                        <li class="page-item"><a href="?page={{ final_table.number|add:'2' }}" class="page-link">&hellip;</a>
+                        </li>
+                        {#                        <li class="page-item"><a href="?page={{ final_table.paginator.num_pages }}" class="page-link">#}
+                        {#                            {{ final_table.paginator.num_pages }}#}
+                        {#                        </a></li>#}
+
+                    {% endif %}
+                    {% if final_table.has_next %}
+                        {% if final_table.paginator.num_pages >  final_table.number|add:'2' %}
+                            <li class="page-item"><a href="?page={{ final_table.paginator.num_pages }}"
+                                                     class="page-link">صفحه آخر</a></li>
+                        {% endif %}
+                        <li class="page-item">
+                            <a href="?page={{ final_table.next_page_number }}" class="page-link">&raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </nav>
+    {% endif %}
+{% endblock html_table %}

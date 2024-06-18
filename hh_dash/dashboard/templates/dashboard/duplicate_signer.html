@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block chart_title %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">امضای گزارش‌ها</h1>
+    </div>
+{% endblock chart_title %}
+{% block html_table %}
+    {% if final_table %}
+        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div>
+        </div>
+
+        {% for signer, detail in final_table %}
+            <div class="accordion" id="accordion-{{ signer | length }}{{ detail | length }}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ signer |length }}{{ detail | length }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ signer | length }}{{ detail | length }}"
+                                aria-expanded="false"
+                                aria-controls="collapse{{ signer | length }}{{ detail | length }}">
+                            <h6>
+                                {{ signer }}
+                            </h6>
+                        </button>
+                    </h2>
+                    <div id="collapse{{ signer | length }}{{ detail | length }}"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="heading-{{ signer | length }}{{ detail | length }}"
+                         data-bs-parent="#accordion-{{ signer | length }}{{ detail | length }}">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">نام شرکت</th>
+                                        <th scope="col" class="text-center">نوع پروژه</th>
+                                        <th scope="col" class="text-center">نام پروژه</th>
+                                        <th scope="col" class="text-center">تاریخ</th>
+                                    </tr>
+                                    </thead>
+                                    {% for item in detail %}
+                                        <tbody>
+                                        <tr>
+                                            <td class="text-center">{{ item.cost_center }}</td>
+                                            <td class="text-center">{{ item.project_kind }}</td>
+                                            <td class="text-center">{{ item.project_name }}</td>
+                                            <td class="text-center">{{ item.jalali }}</td>
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+    {% endif %}
+{% endblock html_table %}

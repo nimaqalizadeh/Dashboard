@@ -1,0 +1,85 @@
+{% load static %}
+<html lang="fa" dir="rtl">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href=" {% static 'fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href=" {% static 'css/owl.carousel.min.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet" integrity="sha384-+qdLaIRZfNu4cVPK/PxJJEy0B0f3Ugv8i482AKY7gwXwhaCroABd086ybrVKTa0q" crossorigin="anonymous">
+
+ <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+<style>
+      body{
+          font-family: Sahel;
+      }
+  </style>
+      <style>
+img {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+</style>
+    <title>ورود به حساب کاربری</title>
+  </head>
+
+  <body>
+
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <img src="{% static 'images/undraw_remotely_2j6y.svg' %}" alt="Image" class="img-fluid">
+        </div>
+
+        <div class="col-md-6 contents">
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="mb-4">
+              <h3>چشم‌انداز</h3>
+              <p class="mb-4">ما در هادی حساب تلاش می‌کنیم تجربه‌ای آسوده از فضای دیجیتال برای کاربران‌مان رقم بزنیم تا با بهره‌گیری از تصمیمات داده‌محور و بررسی به موقع کسب و کار خود فراتر از افق متصورحرکت کنند.</p>
+            </div>
+            <form action="{% url 'accounts:login' %}" method="post">
+                {% csrf_token %}
+              <div class="form-group first">
+{#                <label for="username">نام کاربری</label>#}
+                <input type="text" class="form-control" name="username" placeholder="نام کاربری">
+
+              </div>
+              <div class="form-group last mb-4">
+{#                <label for="password">رمز عبور</label>#}
+                <input type="password" class="form-control" name="password" placeholder="رمز عبور">
+
+              </div>
+
+              <div class="d-flex mb-5 align-items-center">
+                <label class="control control--checkbox mb-0"><span class="caption">مرا به خاطر بسپار</span>
+                  <input type="checkbox" checked="checked"/>
+                  <div class="control__indicator"></div>
+                </label>
+
+              </div>
+
+              <input type="submit" value="ورود" class="btn btn-block btn-light">
+            </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  </body>
+</html>

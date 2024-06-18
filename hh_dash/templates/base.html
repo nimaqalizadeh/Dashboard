@@ -1,0 +1,143 @@
+{% load static %}
+{% spaceless %}
+    <!doctype html>
+    <html lang="fa" dir="rtl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.88.1">
+        <title>داشبورد هادی حساب تهران</title>
+
+
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet"
+              integrity="sha384-+qdLaIRZfNu4cVPK/PxJJEy0B0f3Ugv8i482AKY7gwXwhaCroABd086ybrVKTa0q"
+              crossorigin="anonymous">
+
+{#        <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet"#}
+{#              type="text/css"/>#}
+{#        <style>#}
+{#            body {#}
+{#                font-family: Sahel;#}
+{#            }#}
+{#        </style>#}
+
+        <!-- Favicons -->
+        {#<link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">#}
+        {#<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">#}
+        {#<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">#}
+        {#<link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">#}
+        {#<link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">#}
+        {#<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">#}
+        {#<meta name="theme-color" content="#7952b3">#}
+<style>
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: local('Vazirmatn'),
+        url("{% static 'fonts/Vazirmatn-Light.woff2' %}") format('woff2');
+    }
+</style>
+    <style>
+        body{
+            font-family: "Vazirmatn";
+        }
+    </style>
+
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+            }
+
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+        </style>
+
+
+        <!-- Custom styles for this template -->
+        <link href=" {% static 'css/dashboard.rtl.css' %}" rel="stylesheet">
+        {% block html_head_end %}{% endblock %}
+    </head>
+    <body>
+
+    {% block base_header %}
+        {% include 'bits/header_placeholder.html' %}
+    {% endblock base_header %}
+
+    {% block body_container %}
+
+        <div class="container-fluid">
+            <div class="row">
+
+                {% block side_navbar %}
+                    {% include 'bits/side_navbar.html' %}
+                {% endblock side_navbar %}
+
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    {% block chart_title %}
+                        {% include 'bits/chart_title.html' %}
+                    {% endblock chart_title %}
+                    {#            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">#}
+                    {% block datepicker %}
+                    {% endblock datepicker %}
+                    {#            </div>#}
+
+
+                    {% block chart %}
+                        {% include 'bits/chart_placeholder.html' %}
+                    {% endblock chart %}
+
+                    {% block html_table %}
+                        {% include 'bits/table_placeholder.html' %}
+                    {% endblock html_table %}
+
+                </main>
+            </div>
+        </div>
+
+        {% block javascript %}
+            <script src=" {% static 'js/bootstrap.bundle.min.js' %}"
+                    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                    crossorigin="anonymous"></script>
+
+            <script src="{% static 'js/feather.min.js' %}"
+                    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+                    crossorigin="anonymous"></script>
+            <script src=" {% static 'js/dashboard.js' %}"></script>
+
+            <script src="{% static 'admin/js/core.js' %}"></script>
+
+            {#            <script>#}
+            {#                $(document).ready(function () {#}
+            {#                    $("#id_form").submit(function (e) {#}
+            {#                        e.preventDefault();#}
+            {#                        console.log($(this))#}
+            {#                        $.ajax({#}
+            {#                            type: 'POST',#}
+            {#                            url: '/chart/sunburst',#}
+            {#                            data: $(this).serialize(),#}
+            {#                            success: function (response) {#}
+            {#console.log(this.data);#}
+            {#                                $("#chart-place").append(response)#}
+            {#                                console.log(response);#}
+            {#                                // Handle the response if needed#}
+            {#                            }#}
+            {#                        })#}
+            {#                    })#}
+            {#                })#}
+            {#            </script>#}
+
+        {% endblock javascript %}
+        </body>
+
+    {% endblock body_container %}
+    </html>
+{% endspaceless %}

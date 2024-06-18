@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+
+{% block chart_title %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">شاخص‌های عملکردی</h1>
+    </div>
+{% endblock chart_title %}
+
+{% block datepicker %}
+    <form class="form-group" method="post" action="{% url 'dashboard:bar_chart' %}"
+          class="main needs-validation" id="id_form">
+        {% csrf_token %}
+        <div class="m-2 col-md-12">
+            <div class="row align-items-end">
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ شروع &nbsp</label>
+                        {{ form.start }}
+                        {{ form.media }}
+                    </div>
+                </div>
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ پایان &nbsp</label>
+                        {{ form.end }}
+                        {{ form.media }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row align-items-end">
+                <div class="form-group col-12 col-md-3">
+                    <select class="form-select form-select-sm" name="project_state" id="project_state">
+                        <option value="0">وضعیت پروژه</option>
+                    </select>
+                </div>
+                <div class="row align-items-end">
+
+                    <div class="form-group col-6 col-md-3">
+                        <button type="submit" class="btn btn-sm btn-outline-light my-2 bg-info" value="send"
+                                id="submit_btn">ارسال
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock datepicker %}
+
+{% block chart %}
+    {% if chart %}
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseOne"
+                            aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseOne">
+                        <h6>
+                            مبلغ کل پروژه‌ها (ریال)
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne"
+                     class="accordion-collapse collapse show"
+                     aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ total_cost.project_cost__sum__sum | floatformat:"g" }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseTwo">
+                        <h6>
+                            تعداد پروژه‌ها
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ total_count.project_name__count__sum }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseThree"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseThree">
+                        <h6>
+                            وضعیت پروژه
+
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ status }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFive"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseFive">
+                        <h6>
+                            تاریخ فیلتر شده
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingFive">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ start_day }}
+                            /
+                            {{ start_month }}
+                            /
+                            {{ start_year }}
+                            الی
+                            {{ end_day }}
+                            /
+                            {{ end_month }}
+                            /
+                            {{ end_year }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-5">
+            {{ chart | safe }}
+        </div>
+
+        <div class="row my-5">
+            {{ pie_chart | safe }}
+        </div>
+    {% endif %}
+{% endblock chart %}
+
+{% block html_table %}
+    {% if projects %}
+        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center"> نوع پروژه</th>
+                    <th scope="col" class="text-center">تعداد پروژه</th>
+                    <th scope="col" class="text-center">مبلغ پروژه پروژه</th>
+                </tr>
+                </thead>
+                {% for project in projects %}
+                    <tbody>
+                    <tr>
+                        <td class="text-center">{{ project.project_kind }}</td>
+                        <td class="text-center">{{ project.project_name__count }}</td>
+                        <td class="text-center">{{ project.project_cost__sum | floatformat:"g" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    {#    <script src="{% static 'admin/js/core.js' %}"></script>#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#id_start , #id_end").on("input", function () {
+                let start = $("#id_start").val();
+                let end = $("#id_end").val();
+                if (start.trim().length >= 8 && end.trim().length >= 8) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/chart/project_state_kind',
+                        dataType: 'json',
+                        data: {
+                            start: start,
+                            end: end
+                        },
+                        success: function (response) {
+                            let project_states = $('#project_state');
+                            project_states.empty();
+                            project_states.append($('<option></option>').val("").text("وضعیت پروژه"));
+                            $.each(response, function (index, option) {
+                                project_states.append($('<option></option>').val(option).text(option));
+
+                            });
+                        }
+                    });
+                }
+
+            })
+        })
+    </script>
+{% endblock html_table %}
+
+{#<script src="{% url 'js-catalog' %}"></script>#}

@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+
+{% block chart_title %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">گزارشات مدیریتی</h1>
+    </div>
+{% endblock chart_title %}
+
+{% block datepicker %}
+    <form class="form-group" method="post" action="{% url 'dashboard:sunburst_chart' %}"
+          class="main needs-validation" id="id_form">
+        {% csrf_token %}
+        <div class="m-2 col-md-12">
+            <div class="row align-items-end">
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ شروع &nbsp</label>
+                        {{ form.start }}
+                        {{ form.media }}
+                    </div>
+                </div>
+                <div class="form-group col-12 col-md-3 m-1">
+                    <div>
+                        <label>تاریخ پایان &nbsp</label>
+                        {{ form.end }}
+                        {{ form.media }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="form-group col-12 col-md-3">
+                <select class="form-select form-select-sm" name="project_kind" id="project_kind">
+                    <option value="0">نوع پروژه</option>
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <select class="form-select form-select-sm" name="company_name" id="company_name">
+                    <option value="0">نام شرکت</option>
+                </select>
+            </div>
+            <div class="form-group col-12 col-md-3">
+                <select class="form-select form-select-sm" name="project_name" id="project_name">
+                    <option value="0">نام پروژه</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row align-items-end">
+                <div class="form-group col-12 col-md-3">
+                    <select class="form-select form-select-sm" name="project_state" id="project_state">
+                        <option value="0">وضعیت پروژه</option>
+                    </select>
+                </div>
+                <div class="row align-items-end">
+
+                    <div class="form-group col-6 col-md-3">
+                        <button type="submit" class="btn btn-sm btn-outline-light my-2 bg-info" value="send"
+                                id="submit_btn">ارسال
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock datepicker %}
+
+{% block chart %}
+    {% if chart %}
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseOne"
+                            aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseOne">
+                        <h6>
+                            عنوان
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne"
+                     class="accordion-collapse collapse show"
+                     aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <strong> پروژه
+                            {{ project_kind }}
+                            شرکت
+                            {{ company_name }}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseTwo">
+                        <h6>
+                            نام پروژه
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <strong>        {{ project_name }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseThree"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseThree">
+                        <h6>
+                            وضعیت پروژه
+
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                        <strong>        {{ project_state }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFour"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseFour">
+                        <h6>
+                            مجموع ساعات کارکرد
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingFive">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ total_hours|floatformat:"g" }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                    <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFive"
+                            aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseFive">
+                        <h6>
+                            تاریخ فیلتر شده
+                        </h6>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse"
+                     aria-labelledby="panelsStayOpen-headingFive">
+                    <div class="accordion-body">
+                        <strong>
+                            {{ start_day }}
+                            /
+                            {{ start_month }}
+                            /
+                            {{ start_year }}
+                            الی
+                            {{ end_day }}
+                            /
+                            {{ end_month }}
+                            /
+                            {{ end_year }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            {{ chart | safe }}
+        </div>
+    {% endif %}
+{% endblock chart %}
+
+{% block html_table %}
+    {% if project_table %}
+        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead class=thead-dark">
+                <tr>
+                    <th scope="col" class="text-center">نام خانوادگی</th>
+                    <th scope="col" class="text-center">نام</th>
+                    <th scope="col" class="text-center">سمت</th>
+                    <th scope="col" class="text-center">کارکرد (ساعت)</th>
+                </tr>
+                </thead>
+                {% for project in project_table %}
+                    <tbody>
+                    <tr>
+                        <td class="text-center">{{ project.user_key__user_lastname }}</td>
+                        <td class="text-center">{{ project.user_key__user_firstname }}</td>
+                        <td class="text-center">{{ project.user_key__job_key__job_title }}</td>
+                        <td class="text-center">{{ project.work_hours }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#id_start , #id_end").on("input", function () {
+                let start = $("#id_start").val();
+                let end = $("#id_end").val();
+                if (start.trim().length >= 8 && end.trim().length >= 8) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/chart/project_kind',
+                        dataType: 'json',
+                        data: {
+                            start: start,
+                            end: end
+                        },
+                        success: function (response) {
+                            let project_kinds = $('#project_kind');
+                            project_kinds.empty();
+                            project_kinds.append($('<option></option>').val("").text("نوع پروژه"));
+                            $.each(response, function (index, option) {
+                                project_kinds.append($('<option></option>').val(option).text(option));
+
+                            });
+                        }
+                    });
+                }
+
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#project_kind").on("change", function () {
+                let project_kind = $("#project_kind").val();
+                let start = $("#id_start").val();
+                let end = $("#id_end").val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/chart/company_name',
+                    dataType: 'json',
+                    data: {
+                        project_kind: project_kind,
+                        start: start,
+                        end: end
+                    },
+                    success: function (response) {
+                        let company_names = $('#company_name');
+                        company_names.empty();
+                        company_names.append($('<option></option>').val("").text("نام شرکت"));
+                        $.each(response, function (index, option) {
+                            company_names.append($('<option></option>').val(option).text(option));
+
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#company_name").on("change", function () {
+                let company_name = $("#company_name").val();
+                let project_kind = $("#project_kind").val();
+                let start = $("#id_start").val();
+                let end = $("#id_end").val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/chart/project_name',
+                    dataType: 'json',
+                    data: {
+                        company_name: company_name,
+                        project_kind: project_kind,
+                        start: start,
+                        end: end
+                    },
+                    success: function (response) {
+                        let project_names = $('#project_name');
+                        project_names.empty();
+                        project_names.append($('<option></option>').val("").text("نام پروژه"));
+                        $.each(response, function (index, option) {
+                            project_names.append($('<option></option>').val(option).text(option));
+
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#project_name").on("change", function () {
+                let project_name = $("#project_name").val();
+                console.log("Hi");
+                $.ajax({
+                    type: 'GET',
+                    url: '/chart/project_state_name',
+                    dataType: 'json',
+                    data: {
+                        project_name: project_name
+                    },
+                    success: function (response) {
+                        let project_states = $('#project_state');
+                        project_states.empty();
+                        project_states.append($('<option></option>').val("").text("وضعیت پروژه"));
+                        $.each(response, function (index, option) {
+                            project_states.append($('<option></option>').val(option).text(option));
+
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+{% endblock html_table %}
+{#<script src="{% static 'js/jquery-3.7.1.min.js' %}" type="text/javascript"></script>#}
+{#<script>#}
+{#    $(document).ready(function () {#}
+{#        $("#project_kind").on("change", function (){#}
+{#        const value = $(this).val();#}
+{#        if (value) {#}
+{#            $()#}
+{#            #}
+{#        }#}
+{#            #}
+{#            #}
+{#        }#}
+{#        )#}
+{#        #}
+{#        }#}
+{#    #}
+{#    )#}
+{#</script>#}
+{#{% if messages %}#}
+{#        <div class="alert >{{ messages }}</div>#}
+{#{% endif %}#}
+
+{#<script src="{% url 'js-catalog' %}"></script>#}
